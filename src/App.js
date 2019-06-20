@@ -29,18 +29,41 @@ class App extends Component {
   }
 
   getVehicles() {
-    // axios (GET)
-    // setState with response -> vehiclesToDisplay
+    axios.get("https://joes-autos.herokuapp.com/api/vehicles")
+    .then(result => {
+      toast.success("Successful Vehicle Import");
+      this.setState({
+        vehiclesToDisplay: result.data
+      })
+    })
+    .catch(error => {
+      console.log("This is the error" + error);
+      toast.error("Something wrong OwO");
+    })
+
   }
 
   getPotentialBuyers() {
-    // axios (GET)
-    // setState with response -> buyersToDisplay
+    axios.get("https://joes-autos.herokuapp.com/api/buyers")
+    .then(result => {
+      toast.success("Imported potential buyers");
+      this.setState({
+        buyersToDisplay: result.data
+      })
+    })
   }
 
   sellCar(id) {
-    // axios (DELETE)
-    // setState with response -> vehiclesToDisplay
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`)
+    .then(response => {
+      toast.success("Sold Car!");
+      this.setState({
+        vehiclesToDisplay: response.data.vehicles
+      })
+    })
+    .catch(error => {
+      toast.error("Error in Selling Car");
+    })
   }
 
   filterByMake() {
@@ -58,8 +81,16 @@ class App extends Component {
   }
 
   updatePrice(priceChange, id) {
-    // axios (PUT)
-    // setState with response -> vehiclesToDisplay
+    axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
+    .then(response => {
+      console.log(response);
+      this.setState({
+        vehiclesToDisplay: response.data.vehicles
+      })
+    })
+    .catch(error => {
+      toast.error("Error in updating price");
+    })
   }
 
   addCar() {
@@ -71,8 +102,17 @@ class App extends Component {
       price: this.price.value
     };
 
-    // axios (POST)
-    // setState with response -> vehiclesToDisplay
+    axios.post(`https://joes-autos.herokuapp.com/api/vehicles`, newCar)
+    .then(response => {
+      toast.success("Added car!");
+      this.setState({
+        vehiclesToDisplay: response.data.vehicles
+      })
+    })
+    .catch(error => {
+      toast.error("Car Add Error: " + error);
+    })
+
   }
 
   addBuyer() {
@@ -87,8 +127,7 @@ class App extends Component {
   }
 
   deleteBuyer(id) {
-    // axios (DELETE)
-    //setState with response -> buyersToDisplay
+
   }
 
   nameSearch() {
